@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>더 퍼스트 빛고을 패션위크 모델 선발대회</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        /* 헤더 스타일 */
+        .fixed-header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 5%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #1a1a1a;
+            text-decoration: none;
+            letter-spacing: -0.5px;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2.5rem;
+        }
+
+        .nav-menu a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            font-size: 0.95rem;
+        }
+
+        .nav-menu a:hover {
+            color: #c9a961;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            flex-direction: column;
+            gap: 4px;
+            cursor: pointer;
+        }
+
+        .mobile-menu-btn span {
+            width: 25px;
+            height: 2px;
+            background: #333;
+            transition: all 0.3s ease;
+        }
+
+        /* 히어로 섹션 */
+        .hero-fullscreen {
+            position: relative;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            background: #000;
+        }
+
+        #hero-video {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            min-width: 100%;
+            min-height: 100%;
+            transform: translate(-50%, -50%);
+            object-fit: cover;
+            opacity: 0.7;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.4), rgba(0,0,0,0.6));
+        }
+
+        .hero-content {
+            position: relative;
+            text-align: center;
+            color: white;
+            z-index: 2;
+            animation: fadeInUp 1.5s ease;
+        }
+
+        .hero-content h1 {
+            font-size: clamp(2rem, 5vw, 4rem);
+            font-weight: 300;
+            letter-spacing: 0.2em;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1rem, 3vw, 1.5rem);
+            font-weight: 200;
+            letter-spacing: 0.1em;
+            opacity: 0.9;
+            margin-bottom: 2rem;
+        }
+
+        .hero-date {
+            font-size: 1.2rem;
+            color: #c9a961;
+            font-weight: 500;
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bounce 2s infinite;
+        }
+
+        .scroll-indicator::before {
+            content: '';
+            display: block;
+            width: 20px;
+            height: 30px;
+            border: 2px solid white;
+            border-radius: 10px;
+            position: relative;
+        }
+
+        .scroll-indicator::after {
+            content: '';
+            display: block;
+            width: 4px;
+            height: 8px;
+            background: white;
+            border-radius: 2px;
+            position: absolute;
+            top: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: scroll 2s infinite;
+        }
+
+        /* 섹션 공통 스타일 */
+        section {
+            padding: 5rem 5%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 1rem;
+            color: #1a1a1a;
+            position: relative;
+            padding-bottom: 1.5rem;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 2px;
+            background: #c9a961;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 3rem;
+            font-size: 1.1rem;
+        }
+
+        /* 대회 소개 섹션 */
+        .about-contest {
+            background: #f8f8f8;
+        }
+
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            margin-top: 3rem;
+        }
+
+        .image-slider {
+            position: relative;
+            overflow: hidden;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+
+        .slider-container {
+            display: flex;
+            transition: transform 0.5s ease;
+        }
+
+        .slider-container img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .about-text h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            color: #1a1a1a;
+        }
+
+        .about-text p {
+            color: #666;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+        }
+
+        .highlight-text {
+            background: linear-gradient(to right, #c9a961, #d4af37);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: bold;
+        }
+
+        /* 대회 개요 섹션 */
+        .contest-overview {
+            padding: 5rem 5%;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-top: 3rem;
+        }
+
+        .info-item {
+            text-align: center;
+            padding: 2rem;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .info-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+
+        .info-icon {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 1.5rem;
+            background: linear-gradient(135deg, #c9a961, #d4af37);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        .info-item h4 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: #1a1a1a;
+        }
+
+        .info-item p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        /* 프로세스 타임라인 */
+        .process-timeline {
+            background: #f8f8f8;
+        }
+
+        .timeline {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            margin-top: 4rem;
+            padding: 0 2rem;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            top: 30px;
+            left: 10%;
+            right: 10%;
+            height: 2px;
+            background: #ddd;
+            z-index: 0;
+        }
+
+        .timeline-item {
+            flex: 1;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .timeline-number {
+            width: 60px;
+            height: 60px;
+            background: white;
+            border: 3px solid #c9a961;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #c9a961;
+        }
+
+        .timeline-item h4 {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            color: #1a1a1a;
+        }
+
+        .timeline-item p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        /* 갤러리 섹션 */
+        .photo-gallery {
+            padding: 5rem 5%;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 10px;
+            cursor: pointer;
+            background: #f0f0f0;
+            aspect-ratio: 3/4;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+
+        .gallery-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            padding: 2rem 1.5rem 1.5rem;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+        }
+
+        .gallery-item:hover .gallery-overlay {
+            transform: translateY(0);
+        }
+
+        .gallery-overlay h4 {
+            color: white;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .gallery-overlay p {
+            color: rgba(255,255,255,0.8);
+            font-size: 0.9rem;
+        }
+
+        /* 신청 폼 섹션 */
+        .application-form {
+            background: linear-gradient(135deg, #1a1a1a, #2d2d2d);
+            color: white;
+            padding: 5rem 5%;
+        }
+
+        .form-wrapper {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 4rem;
+        }
+
+        .application-form .section-title {
+            color: white;
+            grid-column: 1/-1;
+        }
+
+        .application-form .section-title::after {
+            background: #c9a961;
+        }
+
+        .form-group {
+            margin-bottom: 2rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: rgba(255,255,255,0.9);
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 1rem;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 5px;
+            color: white;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            background: rgba(255,255,255,0.15);
+            border-color: #c9a961;
+        }
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: rgba(255,255,255,0.5);
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: auto;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #c9a961, #d4af37);
+            color: white;
+            padding: 1.2rem 3rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(201, 169, 97, 0.3);
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(201, 169, 97, 0.5);
+        }
+
+        .side-info {
+            padding: 2rem;
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .side-info h4 {
+            margin-bottom: 1.5rem;
+            color: #c9a961;
+        }
+
+        .qr-code {
+            width: 150px;
+            height: 150px;
+            background: white;
+            border-radius: 10px;
+            margin: 0 auto 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #333;
+        }
+
+        .contact-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            width: 100%;
+            padding: 1rem;
+            background: #fee500;
+            color: #3c1e1e;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .contact-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(254, 229, 0, 0.4);
+        }
+
+        /* 푸터 */
+        .site-footer {
+            background: #1a1a1a;
+            color: rgba(255,255,255,0.7);
+            padding: 3rem 5%;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h4 {
+            color: white;
+            margin-bottom: 1rem;
+        }
+
+        .footer-section p,
+        .footer-section a {
+            color: rgba(255,255,255,0.6);
+            text-decoration: none;
+            line-height: 1.8;
+        }
+
+        .footer-section a:hover {
+            color: #c9a961;
+        }
+
+        .footer-bottom {
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            font-size: 0.9rem;
+        }
+
+        /* 애니메이션 */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateX(-50%) translateY(0);
+            }
+            40% {
+                transform: translateX(-50%) translateY(-10px);
+            }
+            60% {
+                transform: translateX(-50%) translateY(-5px);
+            }
+        }
+
+        @keyframes scroll {
+            0% {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+            }
+            100% {
+                opacity: 0;
+                transform: translateX(-50%) translateY(10px);
+            }
+        }
+
+        /* 반응형 디자인 */
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: flex;
+            }
+
+            .two-column {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .timeline {
+                flex-direction: column;
+                gap: 2rem;
+            }
+
+            .timeline::before {
+                display: none;
+            }
+
+            .form-wrapper {
+                grid-template-columns: 1fr;
+            }
+
+            .gallery-grid {
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            }
+
+            section {
+                padding: 3rem 5%;
+            }
+
+            .hero-content h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 상단 고정 네비게이션 -->
+    <header class="fixed-header">
+        <nav>
+            <a href="#" class="logo">BITGOEUL FASHION</a>
+            <ul class="nav-menu">
+                <li><a href="#about">대회소개</a></li>
+                <li><a href="#overview">대회개요</a></li>
+                <li><a href="#process">참가절차</a></li>
+                <li><a href="#gallery">갤러리</a></li>
+                <li><a href="#apply">참가신청</a></li>
+            </ul>
+            <div class="mobile-menu-btn">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
+    </header>
+
+    <!-- 풀스크린 히어로 섹션 -->
+    <section class="hero-fullscreen">
+        <video id="hero-video" autoplay muted loop playsinline>
+            <source src="0824.mp4" type="video/mp4">
+        </video>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1>The First Bitgoeul</h1>
+            <p class="hero-subtitle">FASHION WEEK MODEL CONTEST</p>
+            <p class="hero-date">2025.03.15 - 03.16</p>
+        </div>
+        <div class="scroll-indicator"></div>
+    </section>
+
+    <!-- 대회 소개 섹션 -->
+    <section id="about" class="about-contest">
+        <h2 class="section-title">대회소개</h2>
+        <p class="section-subtitle">빛고을의 새로운 패션 아이콘을 찾습니다</p>
+        <div class="two-column">
+            <div class="image-slider">
+                <div class="slider-container">
+                    <img src="dynamism/BACO-FASHION-SHOOT-160.jpg" alt="Model Contest">
+                </div>
+            </div>
+            <div class="about-text">
+                <h3>꿈을 향한 <span class="highlight-text">첫 걸음</span></h3>
+                <p>더 퍼스트 빛고을 패션위크 모델 선발대회는 광주 지역의 패션 산업 발전과 신진 모델 발굴을 위한 대회입니다.</p>
+                <p>전문 심사위원단의 공정한 평가를 통해 차세대 패션 리더를 선발하며, 수상자에게는 다양한 활동 기회와 함께 패션업계 진출을 위한 체계적인 지원을 제공합니다.</p>
+                <p>당신의 개성과 재능을 마음껏 펼칠 수 있는 무대, 지금 도전하세요!</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 대회 개요 섹션 -->
+    <section id="overview" class="contest-overview">
+        <h2 class="section-title">대회개요</h2>
+        <div class="info-grid">
+            <div class="info-item">
+                <div class="info-icon">📅</div>
+                <h4>일시</h4>
+                <p>2025년 3월 15일(토) - 16일(일)<br>오후 2시 - 6시</p>
+            </div>
+            <div class="info-item">
+                <div class="info-icon">📍</div>
+                <h4>장소</h4>
+                <p>광주 김대중컨벤션센터<br>다목적홀</p>
+            </div>
+            <div class="info-item">
+                <div class="info-icon">👥</div>
+                <h4>참가자격</h4>
+                <p>만 15세 이상 ~ 30세 이하<br>신장 제한 없음</p>
+            </div>
+            <div class="info-item">
+                <div class="info-icon">🏆</div>
+                <h4>시상내역</h4>
+                <p>대상 500만원<br>최우수상 300만원<br>우수상 100만원</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 참가 프로세스 섹션 -->
+    <section id="process" class="process-timeline">
+        <h2 class="section-title">참가 프로세스</h2>
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-number">1</div>
+                <h4>온라인 신청</h4>
+                <p>신청서 작성 및 제출</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-number">2</div>
+                <h4>서류 심사</h4>
+                <p>포트폴리오 평가</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-number">3</div>
+                <h4>본선 진출</h4>
+                <p>워킹 및 포즈 심사</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-number">4</div>
+                <h4>최종 선발</h4>
+                <p>수상자 발표</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 갤러리 섹션 -->
+    <section id="gallery" class="photo-gallery">
+        <h2 class="section-title">FASHION MOMENTS</h2>
+        <div class="gallery-grid">
+            <div class="gallery-item">
+                <img src="close/BACO-FASHION-SHOOT-222.jpg" alt="Fashion Model 1">
+                <div class="gallery-overlay">
+                    <h4>Professional Shooting</h4>
+                    <p>Close-up Portrait</p>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="close/BACO-FASHION-SHOOT-359.jpg" alt="Fashion Model 2">
+                <div class="gallery-overlay">
+                    <h4>Fashion Portrait</h4>
+                    <p>Studio Photography</p>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="close/BACO-FASHION-SHOOT-40911.jpg" alt="Fashion Model 3">
+                <div class="gallery-overlay">
+                    <h4>Model Portfolio</h4>
+                    <p>Professional Shot</p>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="close/JNY_8594.jpg" alt="Fashion Model 4">
+                <div class="gallery-overlay">
+                    <h4>Fashion Week</h4>
+                    <p>Runway Ready</p>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="dynamism/BACO-FASHION-SHOOT-344.jpg" alt="Fashion Model 5">
+                <div class="gallery-overlay">
+                    <h4>Dynamic Pose</h4>
+                    <p>Movement & Energy</p>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="dynamism/JNY_8583.jpg" alt="Fashion Model 6">
+                <div class="gallery-overlay">
+                    <h4>Editorial Shot</h4>
+                    <p>Magazine Style</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 참가 신청 섹션 -->
+    <section id="apply" class="application-form">
+        <div class="form-wrapper">
+            <h2 class="section-title">참가신청</h2>
+            <form id="applicationForm">
+                <div class="form-group">
+                    <label for="name">이름 *</label>
+                    <input type="text" id="name" name="name" placeholder="실명을 입력해주세요" required>
+                </div>
+                <div class="form-group">
+                    <label for="birth">생년월일 *</label>
+                    <input type="date" id="birth" name="birth" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">연락처 *</label>
+                    <input type="tel" id="phone" name="phone" placeholder="010-0000-0000" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">이메일 *</label>
+                    <input type="email" id="email" name="email" placeholder="example@email.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="height">신장 (cm) *</label>
+                    <input type="number" id="height" name="height" placeholder="170" required>
+                </div>
+                <div class="form-group">
+                    <label for="experience">모델 경력</label>
+                    <select id="experience" name="experience">
+                        <option value="none">경력 없음</option>
+                        <option value="1year">1년 미만</option>
+                        <option value="2year">1-2년</option>
+                        <option value="3year">3년 이상</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="portfolio">포트폴리오 URL</label>
+                    <input type="url" id="portfolio" name="portfolio" placeholder="Instagram, YouTube 등">
+                </div>
+                <div class="form-group">
+                    <label for="motivation">지원동기</label>
+                    <textarea id="motivation" name="motivation" rows="4" placeholder="지원동기를 간단히 작성해주세요"></textarea>
+                </div>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="agree" name="agree" required>
+                    <label for="agree">개인정보 수집 및 이용에 동의합니다</label>
+                </div>
+                <button type="submit" class="submit-btn">신청하기</button>
+            </form>
+            <div class="side-info">
+                <h4>빠른 문의</h4>
+                <div class="qr-code">QR Code</div>
+                <button class="contact-btn">
+                    💬 카카오톡 문의
+                </button>
+                <p style="margin-top: 2rem; text-align: center; font-size: 0.9rem;">
+                    문의전화: 062-123-4567<br>
+                    평일 10:00 - 18:00
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 푸터 -->
+    <footer class="site-footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>주최/주관</h4>
+                <p>빛고을 패션위크 조직위원회<br>
+                광주광역시 패션협회</p>
+            </div>
+            <div class="footer-section">
+                <h4>Contact</h4>
+                <p>전화: 062-123-4567<br>
+                이메일: info@bitgoeul-fashion.kr</p>
+            </div>
+            <div class="footer-section">
+                <h4>Location</h4>
+                <p>광주광역시 서구 상무대로 123<br>
+                김대중컨벤션센터</p>
+            </div>
+            <div class="footer-section">
+                <h4>Follow Us</h4>
+                <p>
+                    <a href="#">Instagram</a> | 
+                    <a href="#">Facebook</a> | 
+                    <a href="#">YouTube</a>
+                </p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 The First Bitgoeul Fashion Week. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // 부드러운 스크롤
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    const headerOffset = 80;
+                    const elementPosition = target.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // 스크롤 시 헤더 스타일 변경
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('.fixed-header');
+            if (window.scrollY > 100) {
+                header.style.background = 'rgba(255, 255, 255, 0.98)';
+                header.style.boxShadow = '0 2px 30px rgba(0,0,0,0.15)';
+            } else {
+                header.style.background = 'rgba(255, 255, 255, 0.95)';
+                header.style.boxShadow = '0 2px 20px rgba(0,0,0,0.1)';
+            }
+        });
+
+        // 이미지 슬라이더 (자동 전환)
+        const sliderImages = [
+            'dynamism/BACO-FASHION-SHOOT-160.jpg',
+            'dynamism/BACO-FASHION-SHOOT-344.jpg',
+            'dynamism/JNY_8583.jpg'
+        ];
+        let currentSlide = 0;
+        const sliderContainer = document.querySelector('.slider-container img');
+
+        if (sliderContainer) {
+            setInterval(() => {
+                currentSlide = (currentSlide + 1) % sliderImages.length;
+                sliderContainer.style.opacity = '0';
+                setTimeout(() => {
+                    sliderContainer.src = sliderImages[currentSlide];
+                    sliderContainer.style.opacity = '1';
+                }, 300);
+            }, 3000);
+        }
+
+        // 폼 제출 처리
+        document.getElementById('applicationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('신청이 완료되었습니다. 빠른 시일 내에 연락드리겠습니다.');
+            this.reset();
+        });
+
+        // 스크롤 애니메이션
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animation = 'fadeInUp 1s ease forwards';
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.info-item, .timeline-item, .gallery-item').forEach(el => {
+            el.style.opacity = '0';
+            observer.observe(el);
+        });
+
+        // 모바일 메뉴 토글
+        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+        const navMenu = document.querySelector('.nav-menu');
+
+        mobileMenuBtn.addEventListener('click', function() {
+            navMenu.classList.toggle('active');
+            this.classList.toggle('active');
+        });
+    </script>
+</body>
+</html>
