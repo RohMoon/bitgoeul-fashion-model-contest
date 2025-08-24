@@ -848,64 +848,24 @@
     </section>
 
     <!-- 참가 신청 섹션 -->
-    <section id="apply" class="application-form">
-        <div class="form-wrapper">
-            <h2 class="section-title">참가신청</h2>
-            <form id="applicationForm">
-                <div class="form-group">
-                    <label for="name">이름 *</label>
-                    <input type="text" id="name" name="name" placeholder="실명을 입력해주세요" required>
-                </div>
-                <div class="form-group">
-                    <label for="birth">생년월일 *</label>
-                    <input type="date" id="birth" name="birth" required>
-                </div>
-                <div class="form-group">
-                    <label for="phone">연락처 *</label>
-                    <input type="tel" id="phone" name="phone" placeholder="010-0000-0000" required>
-                </div>
-                <div class="form-group">
-                    <label for="email">이메일 *</label>
-                    <input type="email" id="email" name="email" placeholder="example@email.com" required>
-                </div>
-                <div class="form-group">
-                    <label for="height">신장 (cm) *</label>
-                    <input type="number" id="height" name="height" placeholder="170" required>
-                </div>
-                <div class="form-group">
-                    <label for="experience">모델 경력</label>
-                    <select id="experience" name="experience">
-                        <option value="none">경력 없음</option>
-                        <option value="1year">1년 미만</option>
-                        <option value="2year">1-2년</option>
-                        <option value="3year">3년 이상</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="portfolio">포트폴리오 URL</label>
-                    <input type="url" id="portfolio" name="portfolio" placeholder="Instagram, YouTube 등">
-                </div>
-                <div class="form-group">
-                    <label for="motivation">지원동기</label>
-                    <textarea id="motivation" name="motivation" rows="4" placeholder="지원동기를 간단히 작성해주세요"></textarea>
-                </div>
-                <div class="checkbox-group">
-                    <input type="checkbox" id="agree" name="agree" required>
-                    <label for="agree">개인정보 수집 및 이용에 동의합니다</label>
-                </div>
-                <button type="submit" class="submit-btn">신청하기</button>
-            </form>
-            <div class="side-info">
-                <h4>빠른 문의</h4>
-                <div class="qr-code">QR Code</div>
-                <button class="contact-btn">
-                    💬 카카오톡 문의
-                </button>
-                <p style="margin-top: 2rem; text-align: center; font-size: 0.9rem;">
-                    문의전화: 010-4687-7082<br>
-                    평일 10:00 - 18:00
-                </p>
-            </div>
+    <section id="apply" class="application-form" style="background: linear-gradient(135deg, #667eea, #764ba2); padding: 80px 5%;">
+        <div style="text-align: center; max-width: 800px; margin: 0 auto;">
+            <h2 class="section-title" style="color: white;">참가신청</h2>
+            <p style="color: rgba(255,255,255,0.9); font-size: 1.2rem; margin-bottom: 3rem;">
+                빛고을 패션위크 모델 선발대회에 도전하세요!<br>
+                아래 버튼을 클릭하여 신청서를 작성해주세요.
+            </p>
+            <a href="https://form.naver.com/response/KME3rJ3Np6U7_kwMuE-Rtg" 
+               target="_blank" 
+               style="display: inline-block; background: white; color: #667eea; padding: 20px 60px; border-radius: 50px; text-decoration: none; font-size: 1.3rem; font-weight: bold; box-shadow: 0 10px 30px rgba(0,0,0,0.2); transition: all 0.3s;"
+               onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 15px 40px rgba(0,0,0,0.3)'"
+               onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 10px 30px rgba(0,0,0,0.2)'">
+                📝 참가 신청하기
+            </a>
+            <p style="color: rgba(255,255,255,0.8); margin-top: 2rem; font-size: 0.95rem;">
+                ※ 네이버 폼으로 이동합니다<br>
+                문의: 010-4687-7082 / 010-3881-4170
+            </p>
         </div>
     </section>
 
@@ -985,61 +945,7 @@
             }, 3000);
         }
 
-        // 폼 제출 처리 (Email API 서버 연동)
-        document.getElementById('applicationForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            // API 서버 주소 (Railway 배포 후 변경)
-            const API_URL = 'https://your-email-api.railway.app'; // 여기에 실제 API 주소 입력
-            // const API_URL = 'http://localhost:3000'; // 로컬 테스트용
-            
-            const submitBtn = this.querySelector('.submit-btn');
-            const originalText = submitBtn.textContent;
-            submitBtn.textContent = '전송 중...';
-            submitBtn.disabled = true;
-            
-            // 폼 데이터 수집
-            const formData = {
-                to_email: 'bitgoeulfnweek@gmail.com', // 받을 이메일 주소
-                subject: '[모델 콘테스트] 신규 참가 신청',
-                name: document.getElementById('name').value,
-                birth: document.getElementById('birth').value,
-                phone: document.getElementById('phone').value,
-                email: document.getElementById('email').value,
-                height: document.getElementById('height').value + 'cm',
-                experience: document.getElementById('experience').options[document.getElementById('experience').selectedIndex].text,
-                portfolio: document.getElementById('portfolio').value || '없음',
-                motivation: document.getElementById('motivation').value || '없음',
-                date: new Date().toLocaleString('ko-KR')
-            };
-            
-            try {
-                // API 서버로 POST 요청
-                const response = await fetch(`${API_URL}/send-form`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(formData)
-                });
-                
-                const result = await response.json();
-                
-                if (result.success) {
-                    alert('신청이 완료되었습니다! 빠른 시일 내에 연락드리겠습니다.');
-                    this.reset();
-                } else {
-                    alert('전송 중 오류가 발생했습니다. 다시 시도해주세요.');
-                    console.error('API Error:', result.message);
-                }
-            } catch (error) {
-                alert('서버 연결에 실패했습니다. 잠시 후 다시 시도해주세요.');
-                console.error('Network Error:', error);
-            } finally {
-                submitBtn.textContent = originalText;
-                submitBtn.disabled = false;
-            }
-        });
+        // 네이버 폼으로 대체되어 폼 제출 처리 제거
 
         // 스크롤 애니메이션
         const observerOptions = {
