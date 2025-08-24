@@ -92,12 +92,23 @@
 
         #hero-video {
             position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        
+        #hero-video iframe {
+            position: absolute;
             top: 50%;
             left: 50%;
-            min-width: 100%;
-            min-height: 100%;
+            width: 100vw;
+            height: 56.25vw; /* 16:9 비율 유지 */
+            min-height: 100vh;
+            min-width: 177.77vh; /* 16:9 비율 유지 */
             transform: translate(-50%, -50%);
-            object-fit: cover;
             opacity: 0.7;
         }
 
@@ -694,9 +705,14 @@
 
     <!-- 풀스크린 히어로 섹션 -->
     <section class="hero-fullscreen">
-        <video id="hero-video" autoplay muted loop playsinline>
-            <source src="0824.mp4" type="video/mp4">
-        </video>
+        <div id="hero-video">
+            <iframe 
+                src="https://www.youtube.com/embed/PMkCpamhTvs?autoplay=1&mute=1&loop=1&playlist=PMkCpamhTvs&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1&enablejsapi=1"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen>
+            </iframe>
+        </div>
         <div class="hero-overlay"></div>
         <div class="hero-content">
             <h1>The First Bitgoeul</h1>
@@ -923,6 +939,7 @@
     </footer>
 
     <script>
+
         // 부드러운 스크롤
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
@@ -973,11 +990,60 @@
             }, 3000);
         }
 
-        // 폼 제출 처리
-        document.getElementById('applicationForm').addEventListener('submit', function(e) {
+        // 폼 제출 처리 (Email API 서버 연동)
+        document.getElementById('applicationForm').addEventListener('submit', async function(e) {
             e.preventDefault();
-            alert('신청이 완료되었습니다. 빠른 시일 내에 연락드리겠습니다.');
-            this.reset();
+            
+            // API 서버 주소 (Railway 배포 후 변경)
+            const API_URL = 'https://your-email-api.railway.app'; // 여기에 실제 API 주소 입력
+            // const API_URL = 'http://localhost:3000'; // 로컬 테스트용
+            
+            const submitBtn = this.querySelector('.submit-btn');
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = '전송 중...';
+            submitBtn.disabled = true;
+            
+            // 폼 데이터 수집
+            const formData = {
+                to_email: 'admin@bitgoeul-fashion.kr', // 받을 이메일 주소
+                subject: '[모델 콘테스트] 신규 참가 신청',
+                name: document.getElementById('name').value,
+                birth: document.getElementById('birth').value,
+                phone: document.getElementById('phone').value,
+                email: document.getElementById('email').value,
+                height: document.getElementById('height').value + 'cm',
+                experience: document.getElementById('experience').options[document.getElementById('experience').selectedIndex].text,
+                portfolio: document.getElementById('portfolio').value || '없음',
+                motivation: document.getElementById('motivation').value || '없음',
+                date: new Date().toLocaleString('ko-KR')
+            };
+            
+            try {
+                // API 서버로 POST 요청
+                const response = await fetch(`${API_URL}/send-form`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    alert('신청이 완료되었습니다! 빠른 시일 내에 연락드리겠습니다.');
+                    this.reset();
+                } else {
+                    alert('전송 중 오류가 발생했습니다. 다시 시도해주세요.');
+                    console.error('API Error:', result.message);
+                }
+            } catch (error) {
+                alert('서버 연결에 실패했습니다. 잠시 후 다시 시도해주세요.');
+                console.error('Network Error:', error);
+            } finally {
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+            }
         });
 
         // 스크롤 애니메이션
